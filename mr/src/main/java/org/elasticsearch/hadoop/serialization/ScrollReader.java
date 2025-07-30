@@ -1052,8 +1052,11 @@ public class ScrollReader implements Closeable {
             else {
                 reader.beginField(absoluteName);
 
-                // Must point to field name
-                Object fieldName = reader.readValue(parser, currentName, FieldType.STRING);
+                // Replace any dots in the field name with underscores to avoid
+                // nested map structures being created unintentionally when
+                // a field name legitimately contains dots.
+                String sanitized = currentName.replace('.', '_');
+                Object fieldName = reader.readValue(parser, sanitized, FieldType.STRING);
                 // And then the value...
                 reader.addToMap(map, fieldName, read(absoluteName, parser.nextToken(), nodeMapping, parser));
                 reader.endField(absoluteName);
