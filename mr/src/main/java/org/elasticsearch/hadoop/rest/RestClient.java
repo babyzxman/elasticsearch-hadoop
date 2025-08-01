@@ -70,7 +70,6 @@ import java.util.Map.Entry;
 
 import static org.elasticsearch.hadoop.rest.Request.Method.DELETE;
 import static org.elasticsearch.hadoop.rest.Request.Method.GET;
-import static org.elasticsearch.hadoop.rest.Request.Method.HEAD;
 import static org.elasticsearch.hadoop.rest.Request.Method.POST;
 import static org.elasticsearch.hadoop.rest.Request.Method.PUT;
 import static org.elasticsearch.hadoop.util.EsMajorVersion.V_6_X;
@@ -545,7 +544,7 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     private boolean exists(String indexOrType) {
-        Request req = new SimpleRequest(HEAD, null, indexOrType);
+        Request req = new SimpleRequest(GET, null, indexOrType);
         Response res = executeNotFoundAllowed(req);
 
         return (res.status() == HttpStatus.OK ? true : false);
